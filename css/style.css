@@ -416,13 +416,14 @@ nav ul a:hover {
 
 .cert-image-wrapper {
   position: relative;
-  height: 200px;
+  padding: 15px;
+  height: 220px;
   overflow: hidden;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
   cursor: pointer;
 }
 
 .cert-image-wrapper img {
+  border-radius: 12px;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -603,13 +604,13 @@ nav ul a:hover {
 }
 
 .project-img-wrapper {
-  width: 100%;
-  height: 200px;
+  padding: 15px 15px 0 15px;
+  height: 220px;
   overflow: hidden;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .project-img-wrapper img {
+  border-radius: 12px;
   width: 100%;
   height: 100%;
   object-fit: cover;
