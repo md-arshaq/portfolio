@@ -1,40 +1,81 @@
-# Cinematic Portfolio - Mohammed Arshaq
+# Mohammed Arshaq — Portfolio
 
-A world-class, breathtaking, and highly interactive portfolio website built with a focus on immersive user experience, premium glassmorphism design, magnetic interactions, and cinematic scroll animations.
+A modern, immersive portfolio website built with a **Neon Void** design system — deep dark backgrounds, neon cyan/magenta accents, smooth scroll animations, and a floating dock navigation.
 
-## 🚀 Tech Stack (2026 Modern Era)
+## 🛠 Tech Stack
 
-- **Next.js 15 (App Router)** - Fast, SEO-optimized, React framework.
-- **React 19** - Component-based UI rendering.
-- **TypeScript** - For type-safe code.
-- **Tailwind CSS v4** - Custom utility-first styling with deep obsidian/electric color tokens.
-- **Framer Motion** - Cinematic, buttery-smooth scroll reveals and interactive animations.
-- **Lenis** - Premium smooth scrolling experience.
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript |
+| UI | React 19 |
+| Styling | Tailwind CSS v4 |
+| Animations | Framer Motion |
+| Smooth Scroll | Lenis |
+| Icons | Font Awesome 6 |
+| Fonts | Outfit + JetBrains Mono (Google Fonts) |
 
-## ✨ Key Fascinating Features
+## ✨ Features
 
-- **Text-Driven Cinematic Hero**: A stunning, avatar-free hero section focusing on massive gradient typography and a tech stack marquee.
-- **Magnetic Buttons**: Call-to-action buttons physically pull towards the cursor for a premium, tactile feel.
-- **Cursor Glow & Trails**: A beautiful ambient purple glow and tracking dot follows the cursor throughout the experience.
-- **Constellation Particle System**: A canvas-based interactive background with colored floating particles that interconnect dynamically.
-- **Ambient Glow Backgrounds**: Dynamic, pulsing orb gradients providing depth and life to the page.
-- **Glassmorphism Design System**: High-end frosted glass cards, subtle glowing borders, and elegant focus states.
-- **Interactive Lightbox**: High-resolution certificate viewing built directly into the UI.
-- **Fully Responsive**: Flawless experience optimized across all devices.
+- **Neon Void Design** — Custom dark theme with cyan, magenta, lime, and violet neon accents
+- **Floating Dock Navigation** — Bottom-center glassmorphism nav bar on desktop; hamburger menu on mobile
+- **Animated Hero** — Gradient-clipped name, terminal-style typewriter for roles, availability badge
+- **Bento Grid Skills** — Skills organized in a responsive bento layout with color-coded categories
+- **Spotlight Project Cards** — Alternating left/right layout with 3D tilt on hover and detail modals
+- **Neon Timeline** — Experience and education with glowing timeline indicators
+- **Certificate Lightbox** — Click-to-view full-resolution certificates
+- **Ambient Background** — Soft animated glow orbs and a subtle dot grid
+- **Cursor Glow** — Ambient light that follows the mouse (desktop only)
+- **Fully Responsive** — Optimized for desktop, tablet, and mobile
 
-## 📂 Project Structure
+## 📂 Structure
 
-All modern code lives within the `portfolio-next/` directory.
-- `portfolio-next/src/app/` - The main entry point, layout, and global CSS.
-- `portfolio-next/src/components/` - React components including all animations, UI sections, and design features.
-- `portfolio-next/public/images/` - Repository for project screenshots, logos, and certificates.
+```
+src/
+├── app/
+│   ├── globals.css      # Design tokens & base styles
+│   ├── layout.tsx        # Root layout with fonts & providers
+│   └── page.tsx          # Page composition
+├── components/
+│   ├── hero.tsx          # Hero section with typewriter
+│   ├── navbar.tsx        # Floating dock nav + mobile menu
+│   ├── skills.tsx        # Bento grid skills
+│   ├── projects.tsx      # Spotlight project cards
+│   ├── experience.tsx    # Timeline experience
+│   ├── education.tsx     # Timeline education
+│   ├── certifications.tsx# Certification cards + lightbox
+│   ├── contact.tsx       # Contact CTA + social links
+│   ├── footer.tsx        # Minimal footer
+│   ├── section-heading.tsx
+│   ├── ambient-background.tsx
+│   ├── cursor-glow.tsx
+│   ├── smooth-scroll.tsx
+│   └── theme-provider.tsx
+├── lib/
+│   └── utils.ts
+public/
+└── images/              # Project screenshots, logos, certificates
+```
 
-## 📬 Let's Connect
+## 🚀 Getting Started
 
-- **Name**: Mohammed Arshaq
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## 📦 Deployment
+
+Deployed on [Vercel](https://vercel.com). Any push to `main` triggers auto-deployment.
+
+## 📬 Contact
+
 - **Email**: arshaq2312@gmail.com
 - **LinkedIn**: [mohammedarshaq7](https://www.linkedin.com/in/mohammedarshaq7/)
 - **GitHub**: [md-arshaq](https://github.com/md-arshaq)
 
 ---
+
 © 2026 Mohammed Arshaq. All rights reserved.
