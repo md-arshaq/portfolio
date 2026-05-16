@@ -24,10 +24,10 @@ export default function FloatingParticles() {
     let animId: number;
     const particles: Particle[] = [];
     const colors = [
-      "rgba(139,92,246,",  // violet
-      "rgba(56,189,248,",  // sky blue
-      "rgba(52,211,153,",  // emerald
-      "rgba(251,113,133,", // rose
+      "rgba(0,229,255,",   // cyan
+      "rgba(255,45,107,",  // magenta
+      "rgba(181,255,59,",  // lime
+      "rgba(168,85,247,",  // violet
     ];
 
     const resize = () => {
@@ -37,16 +37,15 @@ export default function FloatingParticles() {
     resize();
     window.addEventListener("resize", resize);
 
-    // Create particles
-    const count = Math.min(50, Math.floor(window.innerWidth / 25));
+    const count = Math.min(35, Math.floor(window.innerWidth / 40));
     for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        size: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.4 + 0.1,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
+        size: Math.random() * 1.8 + 0.4,
+        opacity: Math.random() * 0.35 + 0.08,
         color: colors[Math.floor(Math.random() * colors.length)],
       });
     }
@@ -54,12 +53,9 @@ export default function FloatingParticles() {
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw particles
       particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
-
-        // Wrap around
         if (p.x < 0) p.x = canvas.width;
         if (p.x > canvas.width) p.x = 0;
         if (p.y < 0) p.y = canvas.height;
@@ -71,18 +67,18 @@ export default function FloatingParticles() {
         ctx.fill();
       });
 
-      // Draw connections between nearby particles
+      // Draw faint connections
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 150) {
+          if (dist < 130) {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(139,92,246,${0.04 * (1 - dist / 150)})`;
-            ctx.lineWidth = 0.5;
+            ctx.strokeStyle = `rgba(0,229,255,${0.03 * (1 - dist / 130)})`;
+            ctx.lineWidth = 0.4;
             ctx.stroke();
           }
         }
@@ -102,7 +98,7 @@ export default function FloatingParticles() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-[1]"
-      style={{ opacity: 0.7 }}
+      style={{ opacity: 0.6 }}
     />
   );
 }

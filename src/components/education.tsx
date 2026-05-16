@@ -8,26 +8,30 @@ export default function Education() {
   return (
     <section id="education" className="relative py-28 md:py-36 px-6 md:px-10 max-w-7xl mx-auto">
       <div className="relative z-10">
-        <SectionHeading subtitle="ACADEMICS" title="Education" />
+        <SectionHeading number="04" subtitle="ACADEMICS" title="Education" />
 
         <div className="max-w-3xl">
           <div className="relative pl-8 md:pl-12">
-            {/* Vertical line */}
+            {/* Vertical neon line */}
             <div className="absolute left-0 top-0 bottom-0 w-px">
-              <motion.div className="w-full h-full bg-gradient-to-b from-secondary/50 via-primary/30 to-transparent"
+              <motion.div className="w-full h-full"
+                style={{ background: "linear-gradient(to bottom, var(--neon-magenta), var(--neon-violet), transparent)" }}
                 initial={{ scaleY: 0 }} whileInView={{ scaleY: 1 }} viewport={{ once: true }}
-                transition={{ duration: 1.2 }} style={{ transformOrigin: "top" }} />
+                transition={{ duration: 1.2 }} />
             </div>
 
-            {/* Dot */}
+            {/* Glowing dot */}
             <div className="absolute left-0 top-0 -translate-x-1/2">
-              <motion.div className="w-3.5 h-3.5 rounded-full bg-secondary border-[3px] border-bg-base shadow-[0_0_12px_var(--secondary)]"
+              <motion.div
+                className="w-3.5 h-3.5 rounded-full bg-neon-magenta border-[3px] border-void"
+                style={{ boxShadow: "0 0 14px var(--neon-magenta)" }}
                 initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
-                transition={{ delay: 0.3, type: "spring", stiffness: 300 }} />
+                transition={{ delay: 0.3, type: "spring", stiffness: 300 }}
+              />
             </div>
 
             {/* Card */}
-            <motion.div className="glass-card p-7 md:p-9"
+            <motion.div className="bento-card p-7 md:p-9 border-neon-magenta/10 hover:border-neon-magenta/20"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-40px" }}
@@ -39,29 +43,29 @@ export default function Education() {
                     <Image src="/images/BMS_College_of_Engineering.png" alt="BMS College" width={48} height={48} className="w-full h-full object-contain" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-text">BMS College of Engineering</h3>
-                    <p className="text-secondary font-medium text-sm">B.E. in CS (Data Science)</p>
+                    <h3 className="text-xl font-bold text-text-primary">BMS College of Engineering</h3>
+                    <p className="text-neon-magenta font-medium text-sm">B.E. in CS (Data Science)</p>
                   </div>
                 </div>
-                <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-secondary/[0.06] text-xs font-semibold text-secondary border border-secondary/10 whitespace-nowrap">
+                <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-neon-magenta/[0.06] text-xs font-semibold text-neon-magenta/80 border border-neon-magenta/10 whitespace-nowrap font-mono">
                   <i className="fa-regular fa-calendar text-[10px]" /> Aug 2023 – May 2027
                 </span>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-5 items-start">
                 {/* CGPA */}
-                <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-secondary/[0.05] border border-secondary/[0.08]">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-secondary to-accent-green flex items-center justify-center">
+                <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-neon-magenta/[0.04] border border-neon-magenta/[0.08]">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center">
                     <i className="fa-solid fa-graduation-cap text-white text-[10px]" />
                   </div>
                   <div>
-                    <p className="text-[10px] text-text-muted uppercase tracking-wider font-bold">CGPA</p>
-                    <p className="text-xl font-extrabold text-secondary leading-none">8.74</p>
+                    <p className="text-[10px] text-text-muted uppercase tracking-wider font-bold font-mono">CGPA</p>
+                    <p className="text-xl font-extrabold text-neon-magenta leading-none">8.74</p>
                   </div>
                 </div>
 
                 <p className="text-text-muted text-sm flex items-center gap-2">
-                  <i className="fa-solid fa-location-dot text-secondary text-[10px]" /> Bengaluru, India
+                  <i className="fa-solid fa-location-dot text-neon-magenta/60 text-[10px]" /> Bengaluru, India
                 </p>
               </div>
             </motion.div>
