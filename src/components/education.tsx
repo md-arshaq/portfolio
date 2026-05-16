@@ -35,7 +35,7 @@ export default function Education() {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}>
 
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
                 <div className="flex items-center gap-4">

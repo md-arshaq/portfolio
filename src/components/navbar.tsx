@@ -94,7 +94,7 @@ export default function DockNav() {
         }}
         initial={{ y: -80 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
       >
         <nav className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
           <a href="#home" onClick={(e) => { e.preventDefault(); go("#home"); }}

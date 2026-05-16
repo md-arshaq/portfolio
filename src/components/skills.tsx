@@ -101,7 +101,7 @@ export default function Skills() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-30px" }}
-              transition={{ duration: 0.55, delay: ci * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.55, delay: ci * 0.08, ease: [0.22, 1, 0.36, 1] as const }}
               whileHover={{ y: -4 }}
             >
               {/* Header */}

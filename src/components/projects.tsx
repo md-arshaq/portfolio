@@ -123,7 +123,7 @@ export default function Projects() {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.65, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.65, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] as const }}
               >
                 <TiltCard className={`bento-card cursor-pointer group overflow-hidden ${a.border}`}>
                   <div className={`flex flex-col ${isEven ? "md:flex-row-reverse" : "md:flex-row"} min-h-[280px]`}
