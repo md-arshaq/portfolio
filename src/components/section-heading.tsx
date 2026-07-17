@@ -18,24 +18,27 @@ export default function SectionHeading({ number, subtitle, title, center = false
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
     >
-      {/* Section number watermark */}
+      {/* Large gradient number watermark */}
       <span className="section-watermark">{number}</span>
 
       {/* Monospace label */}
       <div className={`flex items-center gap-3 mb-4 ${center ? "justify-center" : ""}`}>
         <span className="mono-label">{number}</span>
-        <span className="w-8 h-px bg-neon-cyan/20" />
+        <span className="w-10 h-px bg-gradient-to-r from-neb-indigo/30 to-transparent" />
         <span className="mono-label">{subtitle}</span>
       </div>
 
       {/* Title */}
-      <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-text-primary tracking-tight leading-[1.15]">
+      <h2
+        className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-text-primary tracking-tight leading-[1.15]"
+        style={{ fontFamily: "var(--font-outfit), system-ui, sans-serif" }}
+      >
         {title}
       </h2>
 
-      {/* Underline */}
+      {/* Gradient underline */}
       <motion.div
-        className={`mt-4 h-[2px] w-12 rounded-full bg-gradient-to-r from-neon-cyan to-neon-magenta ${center ? "mx-auto" : ""}`}
+        className={`mt-5 h-[2px] w-16 rounded-full bg-gradient-to-r from-neb-indigo via-neb-cyan to-neb-magenta ${center ? "mx-auto" : ""}`}
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true }}

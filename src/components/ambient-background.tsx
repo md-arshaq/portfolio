@@ -5,34 +5,48 @@ import { motion } from "framer-motion";
 export default function AmbientBackground() {
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {/* Top-left soft cyan glow */}
+      {/* Top-left indigo aurora */}
       <motion.div
-        className="absolute -top-[25%] -left-[10%] w-[700px] h-[700px] rounded-full"
+        className="absolute top-[-20%] left-[-8%] w-[700px] h-[700px] rounded-full"
         style={{
-          background: "radial-gradient(circle, rgba(0,229,255,0.04) 0%, transparent 60%)",
+          background: "radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 60%)",
           filter: "blur(100px)",
         }}
-        animate={{ x: [0, 40, -20, 0], y: [0, -30, 15, 0] }}
-        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ x: [0, 60, -30, 0], y: [0, -40, 25, 0] }}
+        transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Bottom-right violet glow */}
+      {/* Center cyan pulse */}
       <motion.div
-        className="absolute -bottom-[15%] -right-[10%] w-[600px] h-[600px] rounded-full"
+        className="absolute top-[35%] left-[50%] -translate-x-1/2 w-[550px] h-[550px] rounded-full"
         style={{
-          background: "radial-gradient(circle, rgba(168,85,247,0.035) 0%, transparent 60%)",
+          background: "radial-gradient(circle, rgba(34,211,238,0.03) 0%, transparent 60%)",
+          filter: "blur(120px)",
+        }}
+        animate={{ x: [0, -50, 25, 0], y: [0, 35, -25, 0] }}
+        transition={{ duration: 38, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Bottom-right magenta glow */}
+      <motion.div
+        className="absolute bottom-[-15%] right-[-8%] w-[650px] h-[650px] rounded-full"
+        style={{
+          background: "radial-gradient(circle, rgba(232,121,249,0.04) 0%, transparent 60%)",
           filter: "blur(100px)",
         }}
-        animate={{ x: [0, -30, 15, 0], y: [0, 25, -15, 0] }}
-        transition={{ duration: 35, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ x: [0, -35, 18, 0], y: [0, 28, -18, 0] }}
+        transition={{ duration: 33, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Subtle dot grid */}
+      {/* Subtle grid lines */}
       <div
-        className="absolute inset-0 opacity-[0.02]"
+        className="absolute inset-0 opacity-[0.025]"
         style={{
-          backgroundImage: "radial-gradient(rgba(0,229,255,0.4) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
+          backgroundImage: `
+            linear-gradient(rgba(99,102,241,0.3) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(99,102,241,0.3) 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
         }}
       />
     </div>

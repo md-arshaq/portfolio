@@ -3,80 +3,133 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import {
+  GraduationCap,
+  MessageSquare,
+  Video,
+  ExternalLink,
+  X,
+  FileCode2,
+} from "lucide-react";
 import SectionHeading from "./section-heading";
 
 const projects = [
   {
-    title: "Realtime Chat App",
-    description: "A scalable full-stack chat platform with real-time messaging, secure JWT authentication, and live user status tracking across channels.",
-    image: "/images/nova-chat.png",
-    tags: ["React", "Node.js", "Socket.io", "TailwindCSS"],
-    github: "https://github.com/md-arshaq/NovaChat",
-    live: "https://nova-chat-ngd.vercel.app/chat",
-    icon: "fa-solid fa-comments",
-    accent: "neon-cyan",
+    title: "GradeWise AI",
+    subtitle: "Sustainable AI Assessment Platform",
+    description:
+      "An AI-powered grading system for handwritten answer sheets via a three-stage pipeline: Mistral OCR → text structuring → Qwen2.5-0.5B SLM evaluation, with zero cloud dependency.",
+    bullets: [
+      "Built an async job system using FastAPI, Redis (caching + queue), and MongoDB (Motor) for non-blocking batch processing with real-time progress tracking.",
+      "Developed a React + TypeScript frontend for grading review and analytics.",
+    ],
+    image: "/images/gradewise-ai.png",
+    tags: ["FastAPI", "React", "MongoDB", "HuggingFace", "Redis"],
+    github: "https://github.com/md-arshaq/GradeWiseAI",
+    live: "#",
+    Icon: GraduationCap,
+    accent: "neb-indigo",
     num: "01",
   },
   {
-    title: "AI Trip Planner",
-    description: "An AI-powered web app integrating Gemini AI for personalized travel itineraries with a responsive UI and real-time suggestion engine.",
-    image: null,
-    tags: ["React", "Gemini AI", "Firebase", "TailwindCSS"],
-    github: "https://github.com/md-arshaq",
-    live: "#",
-    icon: "fa-solid fa-plane-departure",
-    accent: "neon-magenta",
+    title: "TubeMind",
+    subtitle: "YouTube Intelligence Platform",
+    description:
+      "A full-stack AI platform to chat with any YouTube video using a RAG pipeline: transcripts chunked, embedded via Gemini text-embedding-004, and stored in ChromaDB for semantic retrieval.",
+    bullets: [
+      "Engineered a LangChain retrieval chain with timestamp-aware chunking, delivering answers with precise video timestamp citations.",
+      "Designed a Next.js 15 + TypeScript frontend with real-time chat, video summarization, and topic extraction; deployed on Vercel + Render.",
+    ],
+    image: "/images/tubemind.png",
+    tags: ["Next.js", "FastAPI", "LangChain", "ChromaDB", "Gemini"],
+    github: "https://github.com/md-arshaq/TubeMind",
+    live: "https://tube-mind-yt.vercel.app/",
+    Icon: Video,
+    accent: "neb-cyan",
     num: "02",
   },
   {
-    title: "Sports Image Classification",
-    description: "An ML model achieving 92% accuracy for classifying sports personalities with real-time prediction via Flask and a custom-trained pipeline.",
-    image: null,
-    tags: ["Python", "OpenCV", "scikit-learn", "Flask"],
-    github: "https://github.com/md-arshaq",
-    live: "#",
-    icon: "fa-solid fa-basketball",
-    accent: "neon-lime",
+    title: "NovaChat",
+    subtitle: "Real-Time Chat Application",
+    description:
+      "A full-stack real-time chat app with global and 1-on-1 messaging via persistent WebSocket connections using Socket.IO, React 18, and Node.js.",
+    bullets: [
+      "Engineered a Redis native data layer using Hashes for sessions, Sets for presence tracking, and Streams for chat history persistence.",
+      "Implemented session-based auth with bcrypt hashing; designed a glassmorphism UI with typing indicators and Cloudinary-hosted avatars.",
+    ],
+    image: "/images/nova-chat-1.png",
+    tags: ["React", "Node.js", "Socket.IO", "Redis", "Express"],
+    github: "https://github.com/md-arshaq/NovaChat",
+    live: "https://nova-chat-ngd.vercel.app",
+    Icon: MessageSquare,
+    accent: "neb-magenta",
     num: "03",
-  },
-  {
-    title: "LeetMetric",
-    description: "A web app fetching and displaying real-time LeetCode stats including global ranking, submission history, and daily streaks via API.",
-    image: null,
-    tags: ["HTML", "CSS", "JavaScript", "REST API"],
-    github: "https://github.com/md-arshaq",
-    live: "#",
-    icon: "fa-solid fa-code",
-    accent: "neon-amber",
-    num: "04",
   },
 ];
 
-const accentMap: Record<string, { text: string; bg: string; border: string; glow: string }> = {
-  "neon-cyan": { text: "text-neon-cyan", bg: "bg-neon-cyan", border: "border-neon-cyan/15", glow: "rgba(0,229,255,0.15)" },
-  "neon-magenta": { text: "text-neon-magenta", bg: "bg-neon-magenta", border: "border-neon-magenta/15", glow: "rgba(255,45,107,0.15)" },
-  "neon-lime": { text: "text-neon-lime", bg: "bg-neon-lime", border: "border-neon-lime/15", glow: "rgba(181,255,59,0.12)" },
-  "neon-amber": { text: "text-neon-amber", bg: "bg-neon-amber", border: "border-neon-amber/15", glow: "rgba(255,184,54,0.12)" },
+const accentMap: Record<
+  string,
+  { text: string; bg: string; border: string; glow: string; dot: string }
+> = {
+  "neb-indigo": {
+    text: "text-neb-indigo",
+    bg: "bg-neb-indigo",
+    border: "border-neb-indigo/15",
+    glow: "rgba(129,140,248,0.15)",
+    dot: "bg-neb-indigo",
+  },
+  "neb-cyan": {
+    text: "text-neb-cyan",
+    bg: "bg-neb-cyan",
+    border: "border-neb-cyan/15",
+    glow: "rgba(34,211,238,0.15)",
+    dot: "bg-neb-cyan",
+  },
+  "neb-magenta": {
+    text: "text-neb-magenta",
+    bg: "bg-neb-magenta",
+    border: "border-neb-magenta/15",
+    glow: "rgba(232,121,249,0.15)",
+    dot: "bg-neb-magenta",
+  },
 };
 
 function ProjectImage({ project }: { project: (typeof projects)[0] }) {
   const [err, setErr] = useState(false);
+  const a = accentMap[project.accent];
   if (!project.image || err) {
-    const a = accentMap[project.accent];
     return (
       <div className="absolute inset-0 bg-void-surface flex items-center justify-center">
-        <motion.i className={`${project.icon} text-5xl ${a.text} opacity-15`}
-          animate={{ y: [0, -8, 0] }} transition={{ duration: 4, repeat: Infinity }} />
+        <motion.div
+          className={`${a.text} opacity-20`}
+          animate={{ y: [0, -8, 0] }}
+          transition={{ duration: 4, repeat: Infinity }}
+        >
+          <project.Icon size={48} />
+        </motion.div>
       </div>
     );
   }
   return (
-    <Image src={project.image} alt={project.title} fill sizes="(max-width:768px) 100vw, 50vw"
-      className="object-cover transition-transform duration-700 group-hover:scale-105" onError={() => setErr(true)} />
+    <Image
+      src={project.image}
+      alt={project.title}
+      fill
+      sizes="(max-width:768px) 100vw, 50vw"
+      className="object-cover transition-transform duration-700 group-hover:scale-105"
+      onError={() => setErr(true)}
+      priority
+    />
   );
 }
 
-function TiltCard({ children, className }: { children: React.ReactNode; className: string }) {
+function TiltCard({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
@@ -86,7 +139,7 @@ function TiltCard({ children, className }: { children: React.ReactNode; classNam
     const rect = el.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: y * -6, y: x * 6 });
+    setTilt({ x: y * -4, y: x * 4 });
   };
 
   return (
@@ -96,7 +149,7 @@ function TiltCard({ children, className }: { children: React.ReactNode; classNam
       onMouseMove={handleMouseMove}
       onMouseLeave={() => setTilt({ x: 0, y: 0 })}
       animate={{ rotateX: tilt.x, rotateY: tilt.y }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      transition={{ type: "spring", stiffness: 300, damping: 25 }}
       style={{ transformStyle: "preserve-3d", perspective: 1000 }}
     >
       {children}
@@ -108,11 +161,14 @@ export default function Projects() {
   const [selected, setSelected] = useState<(typeof projects)[0] | null>(null);
 
   return (
-    <section id="projects" className="relative py-28 md:py-36 px-6 md:px-10 max-w-7xl mx-auto">
+    <section
+      id="projects"
+      className="relative py-28 md:py-36 px-6 md:px-10 max-w-7xl mx-auto"
+    >
       <div className="relative z-10">
         <SectionHeading number="02" subtitle="PORTFOLIO" title="Projects" />
 
-        <div className="space-y-6">
+        <div className="space-y-12">
           {projects.map((p, i) => {
             const a = accentMap[p.accent];
             const isEven = i % 2 === 1;
@@ -123,48 +179,98 @@ export default function Projects() {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.65, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] as const }}
+                transition={{
+                  duration: 0.7,
+                  delay: i * 0.1,
+                  ease: [0.22, 1, 0.36, 1] as const,
+                }}
               >
-                <TiltCard className={`bento-card cursor-pointer group overflow-hidden ${a.border}`}>
-                  <div className={`flex flex-col ${isEven ? "md:flex-row-reverse" : "md:flex-row"} min-h-[280px]`}
-                    onClick={() => setSelected(p)}>
-                    {/* Image side */}
-                    <div className="relative w-full md:w-[45%] h-[220px] md:h-auto overflow-hidden">
-                      <ProjectImage project={p} />
-                      {/* Number overlay */}
-                      <div className={`absolute top-4 ${isEven ? "right-4" : "left-4"} z-10`}>
-                        <span className={`font-mono text-4xl font-bold ${a.text} opacity-15`}>{p.num}</span>
+                <TiltCard
+                  className={`nebula-card animated-border cursor-pointer group overflow-hidden ${a.border}`}
+                >
+                  <div
+                    className={`flex flex-col ${isEven ? "md:flex-row-reverse" : "md:flex-row"
+                      } min-h-[320px]`}
+                    onClick={() => setSelected(p)}
+                  >
+                    {/* Image side - styled as a premium browser mockup */}
+                    <div className="relative w-full md:w-[48%] min-h-[240px] md:min-h-auto overflow-hidden bg-void-surface flex flex-col">
+                      {/* Browser header bar */}
+                      <div className="browser-frame-bar">
+                        <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                        <div className="ml-4 px-3 py-0.5 rounded bg-void/50 text-[9px] font-mono text-text-muted/80 truncate max-w-[150px]">
+                          {p.title.toLowerCase().replace(/\s+/g, "")}.io
+                        </div>
                       </div>
-                      {/* Gradient overlay */}
-                      <div className={`absolute inset-0 ${
-                        isEven
-                          ? "bg-gradient-to-l from-void-card/90 via-transparent to-transparent"
-                          : "bg-gradient-to-r from-void-card/90 via-transparent to-transparent"
-                      } hidden md:block`} />
+
+                      {/* Viewport frame containing the screenshot */}
+                      <div className="relative flex-1 min-h-[200px]">
+                        <ProjectImage project={p} />
+
+                        {/* Number overlay */}
+                        <div className={`absolute top-4 ${isEven ? "right-4" : "left-4"} z-10`}>
+                          <span className={`font-mono text-5xl font-extrabold ${a.text} opacity-15`}>
+                            {p.num}
+                          </span>
+                        </div>
+
+                        {/* Fade/glow layout decoration */}
+                        <div
+                          className={`absolute inset-0 bg-gradient-to-t from-void-card/90 via-transparent to-transparent`}
+                        />
+                      </div>
                     </div>
 
                     {/* Content side */}
-                    <div className={`w-full md:w-[55%] p-7 md:p-10 flex flex-col justify-center ${isEven ? "md:items-end md:text-right" : ""}`}>
-                      <h3 className={`text-xl md:text-2xl font-bold text-text-primary mb-3 transition-colors duration-300 group-hover:${a.text}`}>
+                    <div
+                      className={`w-full md:w-[52%] p-8 md:p-12 flex flex-col justify-center ${isEven ? "md:items-end md:text-right" : ""
+                        }`}
+                    >
+                      <p className={`text-[10px] font-mono font-bold ${a.text} opacity-80 tracking-[2px] uppercase mb-3`}>
+                        {p.subtitle}
+                      </p>
+                      <h3 className="text-2xl md:text-3xl font-extrabold text-text-primary mb-4 tracking-tight group-hover:text-text-primary">
                         {p.title}
                       </h3>
-                      <p className="text-text-muted text-sm leading-relaxed mb-5 max-w-md">{p.description}</p>
-                      <div className={`flex flex-wrap gap-2 mb-6 ${isEven ? "md:justify-end" : ""}`}>
+                      <p className="text-text-secondary text-sm leading-relaxed mb-6 max-w-md">
+                        {p.description}
+                      </p>
+                      <div
+                        className={`flex flex-wrap gap-2 mb-7 ${isEven ? "md:justify-end" : ""
+                          }`}
+                      >
                         {p.tags.map((t) => (
-                          <span key={t} className={`text-[10px] px-2.5 py-1 rounded-md font-semibold border ${
-                            `bg-${p.accent}/[0.06] ${a.text}/70 ${a.border}`
-                          }`}>{t}</span>
+                          <span
+                            key={t}
+                            className={`text-[10px] px-3 py-1 rounded-md font-bold border bg-void-elevated/40 ${a.text}/90 ${a.border}`}
+                          >
+                            {t}
+                          </span>
                         ))}
                       </div>
-                      <div className={`flex gap-5 ${isEven ? "md:justify-end" : ""}`}>
-                        <a href={p.github} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}
-                          className={`text-[13px] font-medium text-text-muted hover:${a.text} transition-colors flex items-center gap-1.5`}>
-                          <i className="fab fa-github" /> GitHub
+                      <div
+                        className={`flex gap-5 ${isEven ? "md:justify-end" : ""}`}
+                      >
+                        <a
+                          href={p.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="text-[13px] font-semibold text-text-secondary hover:text-neb-indigo transition-colors flex items-center gap-1.5"
+                        >
+                          <FileCode2 className="w-4 h-4" /> Code
                         </a>
                         {p.live !== "#" && (
-                          <a href={p.live} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}
-                            className={`text-[13px] font-medium text-text-muted hover:${a.text} transition-colors flex items-center gap-1.5`}>
-                            <i className="fa-solid fa-arrow-up-right-from-square text-[10px]" /> Live
+                          <a
+                            href={p.live}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-[13px] font-semibold text-text-secondary hover:text-neb-indigo transition-colors flex items-center gap-1.5"
+                          >
+                            <ExternalLink size={13} /> Live Demo
                           </a>
                         )}
                       </div>
@@ -177,40 +283,88 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Modal Detail View */}
       <AnimatePresence>
         {selected && (
-          <motion.div className="modal-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            onClick={() => setSelected(null)}>
-            <motion.div className="bento-card max-w-2xl w-full mx-4 overflow-hidden max-h-[90vh] overflow-y-auto"
-              initial={{ opacity: 0, scale: 0.92, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.92, y: 30 }} transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              onClick={(e) => e.stopPropagation()}>
-              <div className="relative h-[260px] bg-void-surface">
-                <ProjectImage project={selected} />
-                <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent z-10" />
-                <button onClick={() => setSelected(null)}
-                  className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-void/60 backdrop-blur border border-border-medium flex items-center justify-center text-text-primary hover:text-neon-cyan transition-colors">
-                  <i className="fa-solid fa-xmark" />
+          <motion.div
+            className="modal-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelected(null)}
+          >
+            <motion.div
+              className="nebula-card max-w-2xl w-full mx-4 overflow-hidden max-h-[90vh] overflow-y-auto"
+              initial={{ opacity: 0, scale: 0.94, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Browser frame styling inside modal */}
+              <div className="browser-frame-bar relative z-20">
+                <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                <button
+                  onClick={() => setSelected(null)}
+                  className="ml-auto w-7 h-7 rounded-full bg-void/60 backdrop-blur border border-border-medium flex items-center justify-center text-text-secondary hover:text-neb-magenta transition-colors"
+                >
+                  <X size={13} />
                 </button>
               </div>
+
+              <div className="relative h-[280px] bg-void-surface">
+                <ProjectImage project={selected} />
+                <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent z-10" />
+              </div>
               <div className="p-8 md:p-10">
-                <h3 className="text-2xl font-extrabold text-text-primary mb-3">{selected.title}</h3>
-                <p className="text-text-secondary leading-relaxed mb-6">{selected.description}</p>
+                <p className="text-[11px] font-mono font-bold text-neb-indigo/80 tracking-wider uppercase mb-2">
+                  {selected.subtitle}
+                </p>
+                <h3 className="text-2xl font-extrabold text-text-primary mb-4 tracking-tight">
+                  {selected.title}
+                </h3>
+                <p className="text-text-secondary leading-relaxed mb-6">
+                  {selected.description}
+                </p>
+                {selected.bullets.length > 0 && (
+                  <ul className="space-y-3 mb-8">
+                    {selected.bullets.map((b, i) => (
+                      <li key={i} className="flex items-start gap-3 text-text-secondary text-[13px] leading-relaxed">
+                        <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-neb-indigo/60 flex-shrink-0" />
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                )}
                 <div className="flex flex-wrap gap-2 mb-8">
                   {selected.tags.map((t) => (
-                    <span key={t} className="text-xs px-3 py-1 rounded-lg bg-neon-cyan/[0.06] text-neon-cyan/80 font-semibold border border-neon-cyan/10">{t}</span>
+                    <span
+                      key={t}
+                      className="text-xs px-3.5 py-1.5 rounded-lg bg-neb-indigo/[0.06] text-neb-indigo font-bold border border-neb-indigo/10"
+                    >
+                      {t}
+                    </span>
                   ))}
                 </div>
-                <div className="flex gap-3">
-                  <a href={selected.github} target="_blank" rel="noopener noreferrer"
-                    className="btn-neon-filled inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm">
-                    <i className="fab fa-github" /> View Code
+                <div className="flex gap-4">
+                  <a
+                    href={selected.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-nebula-filled inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm"
+                  >
+                    <FileCode2 className="w-4 h-4" /> View Code
                   </a>
                   {selected.live !== "#" && (
-                    <a href={selected.live} target="_blank" rel="noopener noreferrer"
-                      className="btn-neon inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm">
-                      <i className="fa-solid fa-arrow-up-right-from-square text-xs" /> Live Demo
+                    <a
+                      href={selected.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-nebula inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm"
+                    >
+                      <ExternalLink size={13} /> Live Demo
                     </a>
                   )}
                 </div>

@@ -2,15 +2,24 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  Home,
+  Code2,
+  FolderKanban,
+  Briefcase,
+  GraduationCap,
+  Trophy,
+  Mail,
+} from "lucide-react";
 
 const navItems = [
-  { label: "Home", href: "#home", icon: "fa-solid fa-house" },
-  { label: "Skills", href: "#skills", icon: "fa-solid fa-code" },
-  { label: "Projects", href: "#projects", icon: "fa-solid fa-diagram-project" },
-  { label: "Experience", href: "#experience", icon: "fa-solid fa-briefcase" },
-  { label: "Education", href: "#education", icon: "fa-solid fa-graduation-cap" },
-  { label: "Certs", href: "#certifications", icon: "fa-solid fa-award" },
-  { label: "Contact", href: "#contact", icon: "fa-solid fa-envelope" },
+  { label: "Home", href: "#home", Icon: Home },
+  { label: "Skills", href: "#skills", Icon: Code2 },
+  { label: "Projects", href: "#projects", Icon: FolderKanban },
+  { label: "Experience", href: "#experience", Icon: Briefcase },
+  { label: "Education", href: "#education", Icon: GraduationCap },
+  { label: "Achievements", href: "#achievements", Icon: Trophy },
+  { label: "Contact", href: "#contact", Icon: Mail },
 ];
 
 export default function DockNav() {
@@ -46,7 +55,7 @@ export default function DockNav() {
       <AnimatePresence>
         {visible && (
           <motion.nav
-            className="fixed bottom-6 left-1/2 z-[100] hidden lg:flex items-center gap-1 px-2 py-2 rounded-2xl dock-nav"
+            className="fixed bottom-6 left-1/2 z-[100] hidden lg:flex items-center gap-0.5 px-2.5 py-2.5 rounded-2xl dock-nav"
             initial={{ y: 80, x: "-50%", opacity: 0 }}
             animate={{ y: 0, x: "-50%", opacity: 1 }}
             exit={{ y: 80, x: "-50%", opacity: 0 }}
@@ -54,6 +63,7 @@ export default function DockNav() {
           >
             {navItems.map((item) => {
               const isActive = active === item.href.slice(1);
+              const Icon = item.Icon;
               return (
                 <a
                   key={item.href}
@@ -61,22 +71,27 @@ export default function DockNav() {
                   onClick={(e) => { e.preventDefault(); go(item.href); }}
                   className="relative flex flex-col items-center gap-0.5 px-3.5 py-2 rounded-xl transition-all duration-200 group"
                 >
-                  <i className={`${item.icon} text-[13px] transition-colors duration-200 ${
-                    isActive ? "text-neon-cyan" : "text-text-muted group-hover:text-text-secondary"
-                  }`} />
-                  <span className={`text-[9px] font-medium tracking-wide transition-colors duration-200 ${
-                    isActive ? "text-neon-cyan" : "text-text-muted/60 group-hover:text-text-muted"
-                  }`}>
-                    {item.label}
-                  </span>
+                  {/* Active pill background */}
                   {isActive && (
                     <motion.div
-                      className="absolute -bottom-0.5 w-4 h-[2px] rounded-full bg-neon-cyan"
-                      layoutId="dockIndicator"
-                      style={{ boxShadow: "0 0 10px var(--neon-cyan), 0 0 20px rgba(0,229,255,0.2)" }}
-                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                      className="absolute inset-0 rounded-xl bg-neb-indigo/10 border border-neb-indigo/15"
+                      layoutId="dockPill"
+                      transition={{ type: "spring", stiffness: 400, damping: 28 }}
                     />
                   )}
+                  <Icon className={`relative z-10 w-[14px] h-[14px] transition-colors duration-200 ${isActive
+                      ? "text-neb-indigo"
+                      : "text-text-muted group-hover:text-text-secondary"
+                      }`}
+                  />
+                  <span
+                    className={`relative z-10 text-[9px] font-semibold tracking-wide transition-colors duration-200 ${isActive
+                      ? "text-neb-indigo"
+                      : "text-text-muted/50 group-hover:text-text-muted"
+                      }`}
+                  >
+                    {item.label}
+                  </span>
                 </a>
               );
             })}
@@ -88,17 +103,22 @@ export default function DockNav() {
       <motion.header
         className="fixed top-0 inset-x-0 z-[100] lg:hidden transition-all duration-500"
         style={{
-          background: visible ? "rgba(4,4,10,0.8)" : "transparent",
-          backdropFilter: visible ? "blur(20px)" : "none",
-          borderBottom: visible ? "1px solid var(--border-subtle)" : "1px solid transparent",
+          background: visible ? "rgba(6,8,15,0.85)" : "transparent",
+          backdropFilter: visible ? "blur(24px)" : "none",
+          borderBottom: visible
+            ? "1px solid var(--border-subtle)"
+            : "1px solid transparent",
         }}
         initial={{ y: -80 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
       >
         <nav className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
-          <a href="#home" onClick={(e) => { e.preventDefault(); go("#home"); }}
-            className="text-lg font-bold tracking-tight">
+          <a
+            href="#home"
+            onClick={(e) => { e.preventDefault(); go("#home"); }}
+            className="text-lg font-bold tracking-tight"
+          >
             <span className="gradient-text">MA</span>
             <span className="text-text-secondary font-light ml-0.5">rshaq</span>
           </a>
@@ -107,12 +127,18 @@ export default function DockNav() {
             className="w-9 h-9 rounded-xl flex flex-col items-center justify-center gap-[5px] border border-border-medium bg-void-card/40 backdrop-blur-xl"
             aria-label="Menu"
           >
-            <motion.span className="block w-4 h-[1.5px] bg-text-muted rounded-full"
-              animate={mobileOpen ? { rotate: 45, y: 3.25 } : { rotate: 0, y: 0 }} />
-            <motion.span className="block w-4 h-[1.5px] bg-text-muted rounded-full"
-              animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }} />
-            <motion.span className="block w-4 h-[1.5px] bg-text-muted rounded-full"
-              animate={mobileOpen ? { rotate: -45, y: -3.25 } : { rotate: 0, y: 0 }} />
+            <motion.span
+              className="block w-4 h-[1.5px] bg-text-muted rounded-full"
+              animate={mobileOpen ? { rotate: 45, y: 3.25 } : { rotate: 0, y: 0 }}
+            />
+            <motion.span
+              className="block w-4 h-[1.5px] bg-text-muted rounded-full"
+              animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }}
+            />
+            <motion.span
+              className="block w-4 h-[1.5px] bg-text-muted rounded-full"
+              animate={mobileOpen ? { rotate: -45, y: -3.25 } : { rotate: 0, y: 0 }}
+            />
           </button>
         </nav>
       </motion.header>
@@ -121,26 +147,32 @@ export default function DockNav() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="fixed inset-0 z-[99] bg-void/97 backdrop-blur-3xl flex flex-col items-center justify-center gap-7 lg:hidden"
+            className="fixed inset-0 z-[99] bg-void/97 backdrop-blur-3xl flex flex-col items-center justify-center gap-8 lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {navItems.map((item, i) => (
-              <motion.a key={item.href} href={item.href}
-                onClick={(e) => { e.preventDefault(); go(item.href); }}
-                className={`text-xl font-semibold flex items-center gap-3 ${
-                  active === item.href.slice(1) ? "text-neon-cyan" : "text-text-muted hover:text-text-primary"
-                }`}
-                initial={{ opacity: 0, y: 25 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ delay: i * 0.05, duration: 0.35 }}
-              >
-                <i className={`${item.icon} text-sm w-5 text-center`} />
-                {item.label}
-              </motion.a>
-            ))}
+            {navItems.map((item, i) => {
+              const Icon = item.Icon;
+              return (
+                <motion.a
+                  key={item.href}
+                  href={item.href}
+                  onClick={(e) => { e.preventDefault(); go(item.href); }}
+                  className={`text-xl font-semibold flex items-center gap-3 ${active === item.href.slice(1)
+                    ? "text-neb-indigo"
+                    : "text-text-muted hover:text-text-primary"
+                    }`}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 15 }}
+                  transition={{ delay: i * 0.05, duration: 0.35 }}
+                >
+                  <Icon className="w-5 h-5" />
+                  {item.label}
+                </motion.a>
+              );
+            })}
           </motion.div>
         )}
       </AnimatePresence>

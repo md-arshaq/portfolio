@@ -1,12 +1,15 @@
+import dynamic from "next/dynamic";
 import DockNav from "@/components/navbar";
 import Hero from "@/components/hero";
-import Skills from "@/components/skills";
-import Projects from "@/components/projects";
-import Experience from "@/components/experience";
-import Education from "@/components/education";
-import Certifications from "@/components/certifications";
-import Contact from "@/components/contact";
-import Footer from "@/components/footer";
+
+// Lazy-load everything below the fold — reduces initial JS bundle
+const Skills = dynamic(() => import("@/components/skills"));
+const Projects = dynamic(() => import("@/components/projects"));
+const Experience = dynamic(() => import("@/components/experience"));
+const Education = dynamic(() => import("@/components/education"));
+const Achievements = dynamic(() => import("@/components/achievements"));
+const Contact = dynamic(() => import("@/components/contact"));
+const Footer = dynamic(() => import("@/components/footer"));
 
 export default function Home() {
   return (
@@ -18,7 +21,7 @@ export default function Home() {
         <Projects />
         <Experience />
         <Education />
-        <Certifications />
+        <Achievements />
         <Contact />
       </main>
       <Footer />

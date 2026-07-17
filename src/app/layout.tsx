@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 import SmoothScroll from "@/components/smooth-scroll";
 import AmbientBackground from "@/components/ambient-background";
 import CursorGlow from "@/components/cursor-glow";
@@ -19,17 +18,18 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mohammed Arshaq | Portfolio",
+  title: "Mohammed Arshaq | Full-Stack Developer & AI/ML Engineer",
   description:
-    "Building strong foundations in Computer Science through problem-solving, web development, and real-world projects.",
+    "Full-Stack Developer & AI/ML Engineer. Samsung PRISM Research Intern. Building intelligent systems with React, Next.js, FastAPI, PyTorch, and LangChain.",
   keywords: [
-    "Mohammed Arshaq", "Portfolio", "Software Engineer",
-    "Web Developer", "Full Stack Developer", "React", "Next.js",
+    "Mohammed Arshaq", "Portfolio", "Full Stack Developer",
+    "AI ML Engineer", "Samsung PRISM", "React", "Next.js", "FastAPI",
+    "PyTorch", "LangChain", "Software Engineer", "Bengaluru",
   ],
   authors: [{ name: "Mohammed Arshaq" }],
   openGraph: {
-    title: "Mohammed Arshaq | Portfolio",
-    description: "Building strong foundations in Computer Science through problem-solving, web development, and real-world projects.",
+    title: "Mohammed Arshaq | Full-Stack Developer & AI/ML Engineer",
+    description: "Full-Stack Developer & AI/ML Engineer. Samsung PRISM Research Intern. Building intelligent systems with modern web technologies and AI.",
     type: "website",
   },
 };
@@ -39,20 +39,12 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" data-theme="dark" className={`${outfit.variable} ${jetbrains.variable} antialiased`} suppressHydrationWarning>
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        />
-      </head>
       <body className="min-h-screen bg-void" suppressHydrationWarning>
-        <ThemeProvider>
-          <SmoothScroll>
-            <AmbientBackground />
-            <CursorGlow />
-            <div className="relative z-10">{children}</div>
-          </SmoothScroll>
-        </ThemeProvider>
+        <SmoothScroll>
+          <AmbientBackground />
+          <CursorGlow />
+          <div className="relative z-10">{children}</div>
+        </SmoothScroll>
       </body>
     </html>
   );
