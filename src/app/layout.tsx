@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/smooth-scroll";
-import AmbientBackground from "@/components/ambient-background";
-import CursorGlow from "@/components/cursor-glow";
+import InteractiveCanvas from "@/components/interactive-canvas";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -39,10 +38,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" data-theme="dark" className={`${outfit.variable} ${jetbrains.variable} antialiased`} suppressHydrationWarning>
-      <body className="min-h-screen bg-void" suppressHydrationWarning>
+      <body className="min-h-screen bg-obsidian text-slate-100" suppressHydrationWarning>
         <SmoothScroll>
-          <AmbientBackground />
-          <CursorGlow />
+          <InteractiveCanvas />
           <div className="relative z-10">{children}</div>
         </SmoothScroll>
       </body>

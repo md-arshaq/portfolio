@@ -1,154 +1,175 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  Code2, Database, Server, Brain, Palette,
-  Zap, GitBranch, Cloud, Terminal, Cpu, Layers,
-  Box, Workflow, MessageSquare, Container,
-  LucideIcon,
+  Code2,
+  Database,
+  Server,
+  Brain,
+  Palette,
+  Terminal,
+  Cpu,
+  Layers,
+  Box,
+  Workflow,
+  MessageSquare,
+  Container,
+  GitBranch,
 } from "lucide-react";
-import SectionHeading from "./section-heading";
 
-interface Skill {
-  name: string;
-  Icon: LucideIcon;
-}
-
-interface Category {
+interface SkillCategory {
+  id: string;
   title: string;
-  TitleIcon: LucideIcon;
-  color: string;
-  borderColor: string;
-  iconBg: string;
-  tagStyle: string;
-  span: string;
-  skills: Skill[];
+  icon: any;
+  skills: { name: string; level: string; icon: any }[];
 }
 
-const categories: Category[] = [
+const skillCategories: SkillCategory[] = [
   {
-    title: "Languages",
-    TitleIcon: Code2,
-    color: "neb-indigo",
-    borderColor: "border-neb-indigo/10 hover:border-neb-indigo/35",
-    iconBg: "from-indigo-500 to-blue-600",
-    tagStyle: "bg-neb-indigo/[0.05] text-neb-indigo/90 border-neb-indigo/10 hover:border-neb-indigo/30",
-    span: "lg:row-span-2",
+    id: "aiml",
+    title: "AI / ML & Speech",
+    icon: Brain,
     skills: [
-      { name: "C", Icon: Terminal },
-      { name: "Java", Icon: Code2 },
-      { name: "Python", Icon: Code2 },
-      { name: "JavaScript", Icon: Zap },
-      { name: "TypeScript", Icon: Layers },
+      { name: "PyTorch", level: "Advanced", icon: Cpu },
+      { name: "TensorFlow", level: "Intermediate", icon: Cpu },
+      { name: "LangChain", level: "Advanced", icon: Workflow },
+      { name: "HuggingFace SLMs", level: "Advanced", icon: Brain },
+      { name: "ChromaDB & RAG", level: "Advanced", icon: Database },
+      { name: "Grapheme-to-Phoneme (G2P)", level: "Research", icon: Layers },
     ],
   },
   {
-    title: "Web Development",
-    TitleIcon: Palette,
-    color: "neb-cyan",
-    borderColor: "border-neb-cyan/10 hover:border-neb-cyan/35",
-    iconBg: "from-cyan-500 to-indigo-600",
-    tagStyle: "bg-neb-cyan/[0.05] text-neb-cyan/90 border-neb-cyan/10 hover:border-neb-cyan/30",
-    span: "",
+    id: "web",
+    title: "Full-Stack Web Dev",
+    icon: Palette,
     skills: [
-      { name: "React.js", Icon: Zap },
-      { name: "Next.js", Icon: Layers },
-      { name: "Node.js", Icon: Server },
-      { name: "FastAPI", Icon: Zap },
-      { name: "Socket.IO", Icon: MessageSquare },
-      { name: "Tailwind CSS", Icon: Palette },
+      { name: "React.js 18/19", level: "Advanced", icon: Cpu },
+      { name: "Next.js 15/16", level: "Advanced", icon: Layers },
+      { name: "FastAPI", level: "Advanced", icon: Terminal },
+      { name: "Node.js & Express", level: "Advanced", icon: Server },
+      { name: "Socket.IO", level: "Advanced", icon: MessageSquare },
+      { name: "Tailwind CSS v4", level: "Advanced", icon: Palette },
     ],
   },
   {
-    title: "AI / ML",
-    TitleIcon: Brain,
-    color: "neb-magenta",
-    borderColor: "border-neb-magenta/10 hover:border-neb-magenta/35",
-    iconBg: "from-magenta-500 to-purple-600",
-    tagStyle: "bg-neb-magenta/[0.05] text-neb-magenta/90 border-neb-magenta/10 hover:border-neb-magenta/30",
-    span: "lg:col-span-2",
+    id: "languages",
+    title: "Core Languages",
+    icon: Code2,
     skills: [
-      { name: "TensorFlow", Icon: Cpu },
-      { name: "PyTorch", Icon: Cpu },
-      { name: "LangChain", Icon: Workflow },
-      { name: "HuggingFace", Icon: Brain },
-      { name: "RAG", Icon: Layers },
-      { name: "ChromaDB", Icon: Database },
+      { name: "Python", level: "Expert", icon: Code2 },
+      { name: "TypeScript", level: "Advanced", icon: Layers },
+      { name: "JavaScript", level: "Advanced", icon: Code2 },
+      { name: "Java", level: "Intermediate", icon: Code2 },
+      { name: "C", level: "Intermediate", icon: Terminal },
     ],
   },
   {
+    id: "tools",
     title: "Databases & Tools",
-    TitleIcon: Database,
-    color: "neb-gold",
-    borderColor: "border-neb-gold/10 hover:border-neb-gold/35",
-    iconBg: "from-amber-500 to-orange-600",
-    tagStyle: "bg-neb-gold/[0.05] text-neb-gold/90 border-neb-gold/10 hover:border-neb-gold/30",
-    span: "",
+    icon: Database,
     skills: [
-      { name: "MongoDB", Icon: Database },
-      { name: "PostgreSQL", Icon: Database },
-      { name: "Redis", Icon: Box },
-      { name: "Docker", Icon: Container },
-      { name: "Git", Icon: GitBranch },
+      { name: "Redis (Streams)", level: "Advanced", icon: Box },
+      { name: "MongoDB (Motor Async)", level: "Advanced", icon: Database },
+      { name: "PostgreSQL", level: "Intermediate", icon: Database },
+      { name: "Docker", level: "Intermediate", icon: Container },
+      { name: "Git & GitHub", level: "Advanced", icon: GitBranch },
     ],
   },
 ];
 
 export default function Skills() {
-  return (
-    <section
-      id="skills"
-      className="relative py-28 md:py-36 px-6 md:px-10 max-w-7xl mx-auto"
-    >
-      <div className="relative z-10">
-        <SectionHeading number="01" subtitle="EXPERTISE" title="Skills & Technologies" />
+  const [selectedCat, setSelectedCat] = useState<string>("all");
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((cat, ci) => (
-            <motion.div
-              key={cat.title}
-              className={`nebula-card p-8 group ${cat.span} ${cat.borderColor} animated-border`}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-30px" }}
-              transition={{
-                duration: 0.6,
-                delay: ci * 0.1,
-                ease: [0.22, 1, 0.36, 1] as const,
-              }}
-              whileHover={{ y: -4 }}
+  const filteredCategories = skillCategories.filter(
+    (c) => selectedCat === "all" || c.id === selectedCat
+  );
+
+  return (
+    <section id="skills" className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+      {/* Title */}
+      <div className="text-left space-y-3 mb-10">
+        <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+          Technical Skills
+        </h2>
+        <p className="text-zinc-400 text-sm max-w-xl">
+          Core programming languages, machine learning infrastructure, web APIs, and databases.
+        </p>
+
+        {/* Tab Filters */}
+        <div className="flex flex-wrap items-center gap-2 pt-2">
+          <button
+            onClick={() => setSelectedCat("all")}
+            className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-all border ${
+              selectedCat === "all"
+                ? "bg-zinc-800 border-zinc-700 text-white font-semibold shadow-[0_0_12px_rgba(56,189,248,0.15)]"
+                : "bg-transparent border-white/5 text-zinc-400 hover:text-white"
+            }`}
+          >
+            All Categories
+          </button>
+          {skillCategories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCat(cat.id)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-all border ${
+                selectedCat === cat.id
+                  ? "bg-zinc-800 border-zinc-700 text-white font-semibold shadow-[0_0_12px_rgba(56,189,248,0.15)]"
+                  : "bg-transparent border-white/5 text-zinc-400 hover:text-white"
+              }`}
             >
-              {/* Header */}
-              <div className="flex items-center gap-4.5 mb-6">
-                <div
-                  className={`w-10 h-10 rounded-xl bg-gradient-to-br ${cat.iconBg} flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110`}
-                >
-                  <cat.TitleIcon size={16} className="text-white" />
-                </div>
-                <h3 className="text-[13px] font-bold tracking-[2px] text-text-secondary uppercase">
+              {cat.title}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Grid Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {filteredCategories.map((cat) => {
+          const IconComp = cat.icon;
+          return (
+            <motion.div
+              key={cat.id}
+              layout
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+              className="minimal-card p-6 group"
+            >
+              {/* Category Title */}
+              <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-white/5">
+                <IconComp className="w-5 h-5 text-zinc-400 group-hover:text-accent-steel transition-colors" />
+                <h3 className="text-sm font-bold text-white tracking-tight group-hover:text-accent-steel transition-colors">
                   {cat.title}
                 </h3>
               </div>
 
-              {/* Skills */}
-              <div className="flex flex-wrap gap-2.5">
-                {cat.skills.map(({ name, Icon }, si) => (
-                  <motion.span
-                    key={name}
-                    className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[12px] font-semibold border cursor-default transition-all duration-300 hover:-translate-y-0.5 ${cat.tagStyle}`}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: ci * 0.05 + si * 0.03, duration: 0.35 }}
-                  >
-                    <Icon size={11} className="opacity-60" />
-                    {name}
-                  </motion.span>
-                ))}
+              {/* Skills Subgrid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {cat.skills.map((skill, idx) => {
+                  const SkillIcon = skill.icon;
+                  return (
+                    <div
+                      key={idx}
+                      className="p-2.5 rounded-xl bg-zinc-900 border border-white/5 flex items-center justify-between group/chip hover:border-accent-steel/30 hover:bg-zinc-800/50 transition-all"
+                    >
+                      <div className="flex items-center gap-2">
+                        <SkillIcon className="w-3.5 h-3.5 text-zinc-400 group-hover/chip:text-accent-steel transition-colors" />
+                        <span className="text-xs font-medium text-zinc-300 group-hover/chip:text-white transition-colors">
+                          {skill.name}
+                        </span>
+                      </div>
+                      <span className="text-[9px] font-mono text-zinc-500">
+                        {skill.level}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </motion.div>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </section>
   );

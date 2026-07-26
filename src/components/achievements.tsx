@@ -1,13 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Award, Brain, Trophy, Target, Flame, Code2 } from "lucide-react";
+import { Award, Brain, Target, Flame, Code2 } from "lucide-react";
 import Image from "next/image";
-import SectionHeading from "./section-heading";
 
-/* ===== Animated counter hook ===== */
-function useCounter(target: number, duration = 2000, inView: boolean) {
+function useCounter(target: number, duration = 1500, inView: boolean) {
   const [count, setCount] = useState(0);
   const hasRun = useRef(false);
 
@@ -18,7 +16,6 @@ function useCounter(target: number, duration = 2000, inView: boolean) {
     const tick = (now: number) => {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease-out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       setCount(Math.floor(eased * target));
       if (progress < 1) requestAnimationFrame(tick);
@@ -35,185 +32,116 @@ const stats = [
     value: 1600,
     suffix: "+",
     sub: "Top 20% Globally",
-    Icon: Target,
-    color: "neb-cyan",
-    gradient: "from-cyan-500 to-indigo-600",
+    icon: Target,
   },
   {
-    label: "DSA Problems",
+    label: "DSA Problems Solved",
     value: 1500,
     suffix: "+",
     sub: "LeetCode, GFG & CodeChef",
-    Icon: Code2,
-    color: "neb-indigo",
-    gradient: "from-indigo-500 to-blue-600",
+    icon: Code2,
   },
   {
-    label: "CodeChef",
+    label: "CodeChef Rating",
     value: 2,
     suffix: "★",
     sub: "Competitive Programmer",
-    Icon: Flame,
-    color: "neb-magenta",
-    gradient: "from-magenta-500 to-purple-600",
+    icon: Flame,
   },
 ];
 
 const certs = [
   {
     title: "Nutanix Certified Associate (NCA)",
-    sub: "Cloud Computing Certification",
-    Icon: Award,
+    sub: "Cloud Infrastructure & Enterprise Systems",
     image: "/images/NUTANIX-NCA.png",
-    gradient: "from-cyan-500 to-indigo-600",
   },
   {
-    title: "Simplilearn ML using Python",
-    sub: "Machine Learning Certification",
-    Icon: Brain,
+    title: "Simplilearn Machine Learning with Python",
+    sub: "Supervised & Unsupervised ML Algorithms",
     image: "/images/Intro to Machine Learning.png",
-    gradient: "from-magenta-500 to-purple-600",
   },
 ];
 
-const colorTextMap: Record<string, string> = {
-  "neb-cyan": "text-neb-cyan",
-  "neb-indigo": "text-neb-indigo",
-  "neb-magenta": "text-neb-magenta",
-};
-
-function StatCard({
-  stat,
-  index,
-  inView,
-}: {
-  stat: (typeof stats)[0];
-  index: number;
-  inView: boolean;
-}) {
-  const count = useCounter(stat.value, 2000, inView);
-  const colorText = colorTextMap[stat.color] || "text-neb-indigo";
-
-  return (
-    <motion.div
-      className="nebula-card stat-card p-8 text-center border-border-medium hover:border-neb-indigo/30 animated-border"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{
-        delay: index * 0.1,
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1] as const,
-      }}
-      whileHover={{ y: -6 }}
-    >
-      <div className="relative">
-        <div
-          className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${stat.gradient} mx-auto mb-5 flex items-center justify-center shadow-lg transition-transform duration-300 hover:scale-110`}
-        >
-          <stat.Icon size={20} className="text-white" />
-        </div>
-
-        <p className="text-3xl md:text-4xl font-extrabold text-text-primary mb-2 font-mono tracking-tight">
-          {count}
-          <span className={colorText}>{stat.suffix}</span>
-        </p>
-        <p className="text-[14px] font-bold text-text-secondary mb-1">
-          {stat.label}
-        </p>
-        <p className="text-[12px] text-text-muted">{stat.sub}</p>
-      </div>
-    </motion.div>
-  );
-}
-
 export default function Achievements() {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const inView = useInView(ref, { once: true, margin: "-40px" });
 
   return (
-    <section
-      id="achievements"
-      className="relative py-28 md:py-36 px-6 md:px-10 max-w-7xl mx-auto"
-    >
-      <div className="relative z-10" ref={ref}>
-        <SectionHeading
-          number="05"
-          subtitle="ACCOMPLISHMENTS"
-          title="Achievements"
-        />
+    <section id="achievements" className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+      {/* Title */}
+      <div className="text-left space-y-3 mb-10">
+        <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+          Achievements & Milestones
+        </h2>
+        <p className="text-zinc-400 text-sm max-w-xl">
+          Competitive programming ratings, database problem solving counts, and certifications.
+        </p>
+      </div>
 
-        {/* Stats grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-20">
-          {stats.map((s, i) => (
-            <StatCard key={s.label} stat={s} index={i} inView={isInView} />
-          ))}
-        </div>
+      {/* Stats HUD Row */}
+      <div ref={ref} className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+        {stats.map((stat, idx) => {
+          const IconComp = stat.icon;
+          const count = useCounter(stat.value, 1500, inView);
 
-        {/* Certifications header */}
-        <motion.div
-          className="mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-        >
-          <div className="flex items-center gap-3">
-            <Trophy size={18} className="text-neb-indigo" />
-            <h3 className="text-[13px] font-bold tracking-[2px] text-text-secondary uppercase">
-              Certifications
-            </h3>
-          </div>
-        </motion.div>
-
-        {/* Certifications grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {certs.map((c, i) => (
+          return (
             <motion.div
-              key={c.title}
-              className="nebula-card overflow-hidden group border-border-medium hover:border-neb-indigo/30 animated-border"
-              initial={{ opacity: 0, y: 35 }}
+              key={idx}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-30px" }}
-              transition={{
-                duration: 0.65,
-                delay: 0.4 + i * 0.12,
-                ease: [0.22, 1, 0.36, 1] as const,
-              }}
-              whileHover={{ y: -6 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: idx * 0.08 }}
+              className="minimal-card p-6 text-center group"
             >
-              {/* Image area */}
-              <div className="relative h-[200px] overflow-hidden bg-void-surface">
-                <Image
-                  src={c.image}
-                  alt={c.title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, 50vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-void/80 to-transparent" />
+              <div className="p-2 w-fit mx-auto mb-3 bg-zinc-900 border border-white/5 group-hover:border-accent-steel/30 text-zinc-400 group-hover:text-accent-steel rounded-xl transition-all">
+                <IconComp className="w-5 h-5" />
               </div>
-
-              {/* Content */}
-              <div className="p-7">
-                <div className="flex items-center gap-4">
-                  <div
-                    className={`w-11 h-11 rounded-xl bg-gradient-to-br ${c.gradient} flex items-center justify-center shadow-lg flex-shrink-0`}
-                  >
-                    <c.Icon size={16} className="text-white" />
-                  </div>
-                  <div>
-                    <h4 className="text-base md:text-lg font-bold text-text-primary leading-snug">
-                      {c.title}
-                    </h4>
-                    <p className="text-[12px] text-text-secondary mt-0.5">{c.sub}</p>
-                  </div>
-                </div>
+              <div className="text-3xl font-bold text-white font-mono tracking-tight group-hover:text-accent-steel transition-colors">
+                {count}
+                <span className="text-zinc-400 group-hover:text-accent-steel/80">{stat.suffix}</span>
               </div>
+              <div className="text-xs font-bold text-zinc-300 mt-1">{stat.label}</div>
+              <div className="text-[10px] font-mono text-zinc-500 mt-0.5">{stat.sub}</div>
             </motion.div>
-          ))}
-        </div>
+          );
+        })}
+      </div>
+
+      {/* Certifications Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {certs.map((cert, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: idx * 0.1 }}
+            className="minimal-card minimal-card-silver p-5 flex items-center gap-5 group"
+          >
+            <div className="w-14 h-14 rounded-xl bg-white p-2 flex items-center justify-center shrink-0 shadow-sm transition-transform group-hover:scale-105">
+              <Image
+                src={cert.image}
+                alt={cert.title}
+                width={40}
+                height={40}
+                className="w-full h-full object-contain"
+              />
+            </div>
+
+            <div>
+              <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider group-hover:text-accent-silver transition-colors">
+                Credential
+              </div>
+              <h3 className="text-sm font-bold text-white leading-snug mt-0.5 group-hover:text-accent-silver transition-colors">
+                {cert.title}
+              </h3>
+              <p className="text-xs font-mono text-zinc-400 mt-0.5">
+                {cert.sub}
+              </p>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   );

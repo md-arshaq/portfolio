@@ -1,376 +1,311 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import {
   GraduationCap,
-  MessageSquare,
   Video,
+  MessageSquare,
   ExternalLink,
   X,
-  FileCode2,
+  Sparkles,
+  ArrowUpRight,
+  CheckCircle2,
 } from "lucide-react";
-import SectionHeading from "./section-heading";
 
-const projects = [
+interface Project {
+  id: string;
+  title: string;
+  subtitle: string;
+  category: "ai" | "web" | "all";
+  description: string;
+  bullets: string[];
+  tags: string[];
+  github: string;
+  live: string;
+  icon: any;
+}
+
+const projects: Project[] = [
   {
+    id: "gradewise",
     title: "GradeWise AI",
-    subtitle: "Sustainable AI Assessment Platform",
+    subtitle: "Sustainable On-Prem AI Assessment Platform",
+    category: "ai",
     description:
-      "An AI-powered grading system for handwritten answer sheets via a three-stage pipeline: Mistral OCR → text structuring → Qwen2.5-0.5B SLM evaluation, with zero cloud dependency.",
+      "An automated grading system for handwritten student answer sheets using a three-stage localized pipeline (OCR → Structuring → SLM evaluation) with zero cloud dependency.",
     bullets: [
-      "Built an async job system using FastAPI, Redis (caching + queue), and MongoDB (Motor) for non-blocking batch processing with real-time progress tracking.",
-      "Developed a React + TypeScript frontend for grading review and analytics.",
+      "Built an asynchronous batch processing system using FastAPI, Redis caching/queues, and MongoDB (Motor).",
+      "Designed a responsive React + TypeScript interface displaying rubric performance analytics and student feedback.",
     ],
-    image: "/images/gradewise-ai.png",
-    tags: ["FastAPI", "React", "MongoDB", "HuggingFace", "Redis"],
+    tags: ["FastAPI", "React", "MongoDB", "Qwen2.5", "Redis"],
     github: "https://github.com/md-arshaq/GradeWiseAI",
     live: "#",
-    Icon: GraduationCap,
-    accent: "neb-indigo",
-    num: "01",
+    icon: GraduationCap,
   },
   {
+    id: "tubemind",
     title: "TubeMind",
     subtitle: "YouTube Intelligence Platform",
+    category: "ai",
     description:
-      "A full-stack AI platform to chat with any YouTube video using a RAG pipeline: transcripts chunked, embedded via Gemini text-embedding-004, and stored in ChromaDB for semantic retrieval.",
+      "A full-stack RAG platform enabling conversational intelligence with any YouTube video via semantic vector search and timestamp-aware citations.",
     bullets: [
-      "Engineered a LangChain retrieval chain with timestamp-aware chunking, delivering answers with precise video timestamp citations.",
-      "Designed a Next.js 15 + TypeScript frontend with real-time chat, video summarization, and topic extraction; deployed on Vercel + Render.",
+      "Engineered retrieval chains in LangChain with Gemini text-embeddings and ChromaDB for semantic segment mapping.",
+      "Developed a Next.js 15 + TypeScript frontend featuring streaming chat responses, summaries, and topic indexing.",
     ],
-    image: "/images/tubemind.png",
-    tags: ["Next.js", "FastAPI", "LangChain", "ChromaDB", "Gemini"],
+    tags: ["Next.js 15", "FastAPI", "LangChain", "ChromaDB", "Gemini AI"],
     github: "https://github.com/md-arshaq/TubeMind",
     live: "https://tube-mind-yt.vercel.app/",
-    Icon: Video,
-    accent: "neb-cyan",
-    num: "02",
+    icon: Video,
   },
   {
+    id: "novachat",
     title: "NovaChat",
-    subtitle: "Real-Time Chat Application",
+    subtitle: "Low-Latency Real-Time Messaging Platform",
+    category: "web",
     description:
-      "A full-stack real-time chat app with global and 1-on-1 messaging via persistent WebSocket connections using Socket.IO, React 18, and Node.js.",
+      "A full-stack real-time chat application with global rooms, 1-on-1 messaging, persistent WebSockets, and custom avatar management.",
     bullets: [
-      "Engineered a Redis native data layer using Hashes for sessions, Sets for presence tracking, and Streams for chat history persistence.",
-      "Implemented session-based auth with bcrypt hashing; designed a glassmorphism UI with typing indicators and Cloudinary-hosted avatars.",
+      "Designed a Redis-native data layer using Redis Hashes for user sessions, Sets for presence tracking, and Streams for message history.",
+      "Built a clean React client featuring typing indicators and session-based bcrypt authentication.",
     ],
-    image: "/images/nova-chat-1.png",
-    tags: ["React", "Node.js", "Socket.IO", "Redis", "Express"],
+    tags: ["React 18", "Node.js", "Socket.IO", "Redis Streams", "Express"],
     github: "https://github.com/md-arshaq/NovaChat",
     live: "https://nova-chat-ngd.vercel.app",
-    Icon: MessageSquare,
-    accent: "neb-magenta",
-    num: "03",
+    icon: MessageSquare,
   },
 ];
 
-const accentMap: Record<
-  string,
-  { text: string; bg: string; border: string; glow: string; dot: string }
-> = {
-  "neb-indigo": {
-    text: "text-neb-indigo",
-    bg: "bg-neb-indigo",
-    border: "border-neb-indigo/15",
-    glow: "rgba(129,140,248,0.15)",
-    dot: "bg-neb-indigo",
-  },
-  "neb-cyan": {
-    text: "text-neb-cyan",
-    bg: "bg-neb-cyan",
-    border: "border-neb-cyan/15",
-    glow: "rgba(34,211,238,0.15)",
-    dot: "bg-neb-cyan",
-  },
-  "neb-magenta": {
-    text: "text-neb-magenta",
-    bg: "bg-neb-magenta",
-    border: "border-neb-magenta/15",
-    glow: "rgba(232,121,249,0.15)",
-    dot: "bg-neb-magenta",
-  },
-};
-
-function ProjectImage({ project }: { project: (typeof projects)[0] }) {
-  const [err, setErr] = useState(false);
-  const a = accentMap[project.accent];
-  if (!project.image || err) {
-    return (
-      <div className="absolute inset-0 bg-void-surface flex items-center justify-center">
-        <motion.div
-          className={`${a.text} opacity-20`}
-          animate={{ y: [0, -8, 0] }}
-          transition={{ duration: 4, repeat: Infinity }}
-        >
-          <project.Icon size={48} />
-        </motion.div>
-      </div>
-    );
-  }
-  return (
-    <Image
-      src={project.image}
-      alt={project.title}
-      fill
-      sizes="(max-width:768px) 100vw, 50vw"
-      className="object-cover transition-transform duration-700 group-hover:scale-105"
-      onError={() => setErr(true)}
-      priority
-    />
-  );
-}
-
-function TiltCard({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className: string;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: y * -4, y: x * 4 });
-  };
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => setTilt({ x: 0, y: 0 })}
-      animate={{ rotateX: tilt.x, rotateY: tilt.y }}
-      transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      style={{ transformStyle: "preserve-3d", perspective: 1000 }}
-    >
-      {children}
-    </motion.div>
-  );
-}
+const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+);
 
 export default function Projects() {
-  const [selected, setSelected] = useState<(typeof projects)[0] | null>(null);
+  const [filter, setFilter] = useState<"all" | "ai" | "web">("all");
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
+  const filteredProjects = projects.filter(
+    (p) => filter === "all" || p.category === filter
+  );
 
   return (
-    <section
-      id="projects"
-      className="relative py-28 md:py-36 px-6 md:px-10 max-w-7xl mx-auto"
-    >
-      <div className="relative z-10">
-        <SectionHeading number="02" subtitle="PORTFOLIO" title="Projects" />
+    <section id="projects" className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+      {/* Title */}
+      <div className="text-left space-y-3 mb-10">
+        <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+          Selected Projects
+        </h2>
+        <p className="text-zinc-400 text-sm max-w-xl">
+          Applications combining full-stack web engineering, databases, and localized or cloud-based AI.
+        </p>
 
-        <div className="space-y-12">
-          {projects.map((p, i) => {
-            const a = accentMap[p.accent];
-            const isEven = i % 2 === 1;
-
-            return (
-              <motion.div
-                key={p.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{
-                  duration: 0.7,
-                  delay: i * 0.1,
-                  ease: [0.22, 1, 0.36, 1] as const,
-                }}
-              >
-                <TiltCard
-                  className={`nebula-card animated-border cursor-pointer group overflow-hidden ${a.border}`}
-                >
-                  <div
-                    className={`flex flex-col ${isEven ? "md:flex-row-reverse" : "md:flex-row"
-                      } min-h-[320px]`}
-                    onClick={() => setSelected(p)}
-                  >
-                    {/* Image side - styled as a premium browser mockup */}
-                    <div className="relative w-full md:w-[48%] min-h-[240px] md:min-h-auto overflow-hidden bg-void-surface flex flex-col">
-                      {/* Browser header bar */}
-                      <div className="browser-frame-bar">
-                        <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
-                        <div className="ml-4 px-3 py-0.5 rounded bg-void/50 text-[9px] font-mono text-text-muted/80 truncate max-w-[150px]">
-                          {p.title.toLowerCase().replace(/\s+/g, "")}.io
-                        </div>
-                      </div>
-
-                      {/* Viewport frame containing the screenshot */}
-                      <div className="relative flex-1 min-h-[200px]">
-                        <ProjectImage project={p} />
-
-                        {/* Number overlay */}
-                        <div className={`absolute top-4 ${isEven ? "right-4" : "left-4"} z-10`}>
-                          <span className={`font-mono text-5xl font-extrabold ${a.text} opacity-15`}>
-                            {p.num}
-                          </span>
-                        </div>
-
-                        {/* Fade/glow layout decoration */}
-                        <div
-                          className={`absolute inset-0 bg-gradient-to-t from-void-card/90 via-transparent to-transparent`}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Content side */}
-                    <div
-                      className={`w-full md:w-[52%] p-8 md:p-12 flex flex-col justify-center ${isEven ? "md:items-end md:text-right" : ""
-                        }`}
-                    >
-                      <p className={`text-[10px] font-mono font-bold ${a.text} opacity-80 tracking-[2px] uppercase mb-3`}>
-                        {p.subtitle}
-                      </p>
-                      <h3 className="text-2xl md:text-3xl font-extrabold text-text-primary mb-4 tracking-tight group-hover:text-text-primary">
-                        {p.title}
-                      </h3>
-                      <p className="text-text-secondary text-sm leading-relaxed mb-6 max-w-md">
-                        {p.description}
-                      </p>
-                      <div
-                        className={`flex flex-wrap gap-2 mb-7 ${isEven ? "md:justify-end" : ""
-                          }`}
-                      >
-                        {p.tags.map((t) => (
-                          <span
-                            key={t}
-                            className={`text-[10px] px-3 py-1 rounded-md font-bold border bg-void-elevated/40 ${a.text}/90 ${a.border}`}
-                          >
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                      <div
-                        className={`flex gap-5 ${isEven ? "md:justify-end" : ""}`}
-                      >
-                        <a
-                          href={p.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="text-[13px] font-semibold text-text-secondary hover:text-neb-indigo transition-colors flex items-center gap-1.5"
-                        >
-                          <FileCode2 className="w-4 h-4" /> Code
-                        </a>
-                        {p.live !== "#" && (
-                          <a
-                            href={p.live}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className="text-[13px] font-semibold text-text-secondary hover:text-neb-indigo transition-colors flex items-center gap-1.5"
-                          >
-                            <ExternalLink size={13} /> Live Demo
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </TiltCard>
-              </motion.div>
-            );
-          })}
+        {/* Tab Filters */}
+        <div className="flex items-center gap-2 pt-2">
+          {[
+            { id: "all", label: "All" },
+            { id: "ai", label: "AI & ML" },
+            { id: "web", label: "Web Systems" },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setFilter(tab.id as any)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-all border ${
+                filter === tab.id
+                  ? "bg-zinc-800 border-zinc-700 text-white font-semibold shadow-[0_0_12px_rgba(56,189,248,0.15)]"
+                  : "bg-transparent border-white/5 text-zinc-400 hover:text-white"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Modal Detail View */}
-      <AnimatePresence>
-        {selected && (
-          <motion.div
-            className="modal-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelected(null)}
-          >
+      {/* Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {filteredProjects.map((project) => {
+          const IconComp = project.icon;
+
+          return (
             <motion.div
-              className="nebula-card max-w-2xl w-full mx-4 overflow-hidden max-h-[90vh] overflow-y-auto"
-              initial={{ opacity: 0, scale: 0.94, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.94, y: 20 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              onClick={(e) => e.stopPropagation()}
+              key={project.id}
+              layout
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+              className="minimal-card p-6 flex flex-col justify-between group"
             >
-              {/* Browser frame styling inside modal */}
-              <div className="browser-frame-bar relative z-20">
-                <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
-                <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
-                <button
-                  onClick={() => setSelected(null)}
-                  className="ml-auto w-7 h-7 rounded-full bg-void/60 backdrop-blur border border-border-medium flex items-center justify-center text-text-secondary hover:text-neb-magenta transition-colors"
-                >
-                  <X size={13} />
-                </button>
+              <div>
+                <div className="flex items-start justify-between gap-4 mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-xl bg-zinc-900 border border-white/5 text-zinc-300 group-hover:text-accent-steel group-hover:border-accent-steel/30 transition-all">
+                      <IconComp className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-white tracking-tight group-hover:text-accent-steel transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="text-xs font-mono text-zinc-400 mt-0.5">
+                        {project.subtitle}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-zinc-300 text-xs md:text-sm leading-relaxed mb-6">
+                  {project.description}
+                </p>
+
+                <ul className="space-y-2 mb-6">
+                  {project.bullets.map((b, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-xs text-zinc-400">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-accent-steel shrink-0 mt-0.5" />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
-              <div className="relative h-[280px] bg-void-surface">
-                <ProjectImage project={selected} />
-                <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent z-10" />
-              </div>
-              <div className="p-8 md:p-10">
-                <p className="text-[11px] font-mono font-bold text-neb-indigo/80 tracking-wider uppercase mb-2">
-                  {selected.subtitle}
-                </p>
-                <h3 className="text-2xl font-extrabold text-text-primary mb-4 tracking-tight">
-                  {selected.title}
-                </h3>
-                <p className="text-text-secondary leading-relaxed mb-6">
-                  {selected.description}
-                </p>
-                {selected.bullets.length > 0 && (
-                  <ul className="space-y-3 mb-8">
-                    {selected.bullets.map((b, i) => (
-                      <li key={i} className="flex items-start gap-3 text-text-secondary text-[13px] leading-relaxed">
-                        <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-neb-indigo/60 flex-shrink-0" />
-                        {b}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {selected.tags.map((t) => (
+              <div className="space-y-4 pt-4 border-t border-white/5">
+                <div className="flex flex-wrap gap-1">
+                  {project.tags.map((t) => (
                     <span
                       key={t}
-                      className="text-xs px-3.5 py-1.5 rounded-lg bg-neb-indigo/[0.06] text-neb-indigo font-bold border border-neb-indigo/10"
+                      className="px-2.5 py-0.5 rounded bg-zinc-900 border border-white/5 text-[10px] font-mono text-zinc-400 group-hover:text-zinc-200 group-hover:border-accent-steel/20 transition-all"
                     >
                       {t}
                     </span>
                   ))}
                 </div>
-                <div className="flex gap-4">
-                  <a
-                    href={selected.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-nebula-filled inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm"
+
+                <div className="flex items-center justify-between pt-2">
+                  <button
+                    onClick={() => setSelectedProject(project)}
+                    className="text-xs font-mono text-zinc-400 hover:text-accent-steel flex items-center gap-1 transition-colors"
                   >
-                    <FileCode2 className="w-4 h-4" /> View Code
-                  </a>
-                  {selected.live !== "#" && (
+                    <span>Deep Dive</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </button>
+
+                  <div className="flex items-center gap-2">
                     <a
-                      href={selected.live}
+                      href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn-nebula inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm"
+                      className="p-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-white/5 hover:border-accent-steel/30 transition-all"
+                      title="GitHub"
                     >
-                      <ExternalLink size={13} /> Live Demo
+                      <GithubIcon className="w-3.5 h-3.5" />
+                    </a>
+                    {project.live !== "#" && (
+                      <a
+                        href={project.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3.5 py-1.5 rounded-lg bg-white text-zinc-950 text-xs font-bold flex items-center gap-1 hover:bg-accent-steel hover:text-zinc-950 transition-colors shadow-[0_4px_12px_rgba(255,255,255,0.05)]"
+                      >
+                        <span>Demo</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              className="fixed inset-0 bg-black/75 backdrop-blur-md"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedProject(null)}
+            />
+            <motion.div
+              className="relative w-full max-w-xl bg-zinc-950 rounded-2xl p-6 border border-white/10 shadow-2xl z-10"
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+            >
+              <div className="flex items-start justify-between gap-4 mb-4">
+                <div>
+                  <h3 className="text-lg font-bold text-white">
+                    {selectedProject.title}
+                  </h3>
+                  <p className="text-xs font-mono text-accent-steel mt-0.5">
+                    {selectedProject.subtitle}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="p-1.5 rounded-lg hover:bg-white/5 text-zinc-400 hover:text-white"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="space-y-4 text-xs md:text-sm text-zinc-300">
+                <p>{selectedProject.description}</p>
+
+                <div className="space-y-2">
+                  <div className="font-semibold text-white">Highlights</div>
+                  <ul className="space-y-1.5">
+                    {selectedProject.bullets.map((b, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-accent-steel shrink-0 mt-0.5" />
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 pt-2">
+                  {selectedProject.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="px-2 py-0.5 rounded bg-zinc-900 border border-white/5 text-[10px] font-mono text-zinc-300"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-3 pt-4 border-t border-white/5">
+                  <a
+                    href={selectedProject.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 py-2 rounded-xl bg-zinc-900 border border-white/10 hover:border-white/20 text-center text-xs font-mono text-white flex items-center justify-center gap-1.5"
+                  >
+                    <GithubIcon className="w-4 h-4" />
+                    <span>Repository</span>
+                  </a>
+                  {selectedProject.live !== "#" && (
+                    <a
+                      href={selectedProject.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 py-2 rounded-xl bg-white text-zinc-950 text-center text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-zinc-200"
+                    >
+                      <span>Launch App</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   )}
                 </div>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </section>
