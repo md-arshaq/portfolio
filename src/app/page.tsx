@@ -8,6 +8,7 @@ const Projects = dynamic(() => import("@/components/projects"));
 const Experience = dynamic(() => import("@/components/experience"));
 const Education = dynamic(() => import("@/components/education"));
 const Achievements = dynamic(() => import("@/components/achievements"));
+const CodingProfiles = dynamic(() => import("@/components/coding-profiles"));
 const Contact = dynamic(() => import("@/components/contact"));
 const Footer = dynamic(() => import("@/components/footer"));
 
@@ -22,6 +23,7 @@ export default function Home() {
         <Experience />
         <Education />
         <Achievements />
+        <CodingProfiles />
         <Contact />
       </main>
       <Footer />

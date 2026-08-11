@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Trophy, Flame, Copy, Check, ExternalLink, Send } from "lucide-react";
+import { Mail, Trophy, Flame, Copy, Check, ExternalLink, Send, FileText } from "lucide-react";
 
 const socials = [
   {
@@ -11,6 +11,12 @@ const socials = [
     href: "mailto:arshaq2312@gmail.com",
     icon: Mail,
     isCopyable: true,
+  },
+  {
+    label: "Resume",
+    value: "View Resume",
+    href: "https://drive.google.com/file/d/1SAFGN7iEH5fl-QciYmAc5vVxwZBQVX4P/view?usp=sharing",
+    icon: FileText,
   },
   {
     label: "GitHub",
@@ -34,19 +40,7 @@ const socials = [
         <circle cx="4" cy="4" r="2" />
       </svg>
     ),
-  },
-  {
-    label: "LeetCode",
-    value: "mhd_arshaq38",
-    href: "https://leetcode.com/u/mhd_arshaq38",
-    icon: Trophy,
-  },
-  {
-    label: "CodeChef",
-    value: "md_arshaq",
-    href: "https://www.codechef.com/users/md_arshaq",
-    icon: Flame,
-  },
+  }
 ];
 
 export default function Contact() {
@@ -86,7 +80,7 @@ export default function Contact() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
+
         {/* Social Grid */}
         <div className="lg:col-span-6 space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

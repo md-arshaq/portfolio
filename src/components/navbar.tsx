@@ -108,7 +108,7 @@ export default function DockNav() {
             </button>
 
             <a
-              href="/Arshaq_Resume_JULY_26_updated.pdf"
+              href="https://drive.google.com/file/d/1SAFGN7iEH5fl-QciYmAc5vVxwZBQVX4P/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white hover:bg-zinc-100 text-zinc-950 text-xs font-bold transition-all shadow-[0_4px_15px_rgba(255,255,255,0.05)]"
@@ -154,7 +154,7 @@ export default function DockNav() {
               </div>
 
               <a
-                href="/Arshaq_Resume_JULY_26_updated.pdf"
+                href="https://drive.google.com/file/d/1SAFGN7iEH5fl-QciYmAc5vVxwZBQVX4P/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-white text-zinc-950 font-bold text-xs"
