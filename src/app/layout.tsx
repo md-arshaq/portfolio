@@ -3,6 +3,7 @@ import { Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/smooth-scroll";
 import InteractiveCanvas from "@/components/interactive-canvas";
+import { Analytics } from "@vercel/analytics/next";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -42,6 +43,7 @@ export default function RootLayout({
         <SmoothScroll>
           <InteractiveCanvas />
           <div className="relative z-10">{children}</div>
+          <Analytics />
         </SmoothScroll>
       </body>
     </html>
