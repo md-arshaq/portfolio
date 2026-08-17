@@ -4,6 +4,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/smooth-scroll";
 import InteractiveCanvas from "@/components/interactive-canvas";
 import { Analytics } from "@vercel/analytics/next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -45,6 +46,7 @@ export default function RootLayout({
           <div className="relative z-10">{children}</div>
           <Analytics />
         </SmoothScroll>
+        <GoogleAnalytics gaId="G-EGT0X3YGKK" />
       </body>
     </html>
   );
